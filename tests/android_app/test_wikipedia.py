@@ -17,7 +17,5 @@ def test_open_article():
     with allure.step('Найти значение'):
         browser.element((AppiumBy.ACCESSIBILITY_ID, 'Search Wikipedia')).click()
         browser.element((AppiumBy.ID, 'org.wikipedia.alpha:id/search_src_text')).type('Appium')
-    with allure.step('Подвердить наличие результата поиска'):
-        results = browser.all((AppiumBy.ID, 'org.wikipedia.alpha:id/page_list_item_title'))
     with allure.step('Открыть статью'):
-        browser.all((AppiumBy.ID, 'org.wikipedia.alpha:id/page_list_item_title')).first.click()
+        browser.all((AppiumBy.ID, 'org.wikipedia.alpha:id/page_list_item_title')).first.should(have.text('Appium')).click()
