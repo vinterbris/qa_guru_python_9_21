@@ -160,3 +160,4 @@ cython_debug/
 .idea/
 !/tests/android_app/allure-results/
 !/tests/ios_app/allure-results/
+!/allure-results/
