@@ -1,3 +1,4 @@
+import allure
 import allure_commons
 import pytest
 from appium import webdriver
@@ -31,17 +32,18 @@ def mobile_management():
         }
     })
 
-    browser.config.driver = webdriver.Remote("http://hub.browserstack.com/wd/hub", options=options)
+    with allure.step('init app session'):
+        browser.config.driver = webdriver.Remote("http://hub.browserstack.com/wd/hub", options=options)
     browser.config.timeout = config.timeout
     browser.config._wait_decorator = support._logging.wait_with(context=allure_commons._allure.StepContext)
-
-    attach.add_screenshot(browser)
-    attach.add_xml(browser)
 
     session_id = browser.driver.session_id
 
     yield
 
-    browser.quit()
+    with allure.step('Tear down app session'):
+        browser.quit()
 
+    attach.add_screenshot(browser)
+    attach.add_xml(browser)
     attach.add_video(browser, session_id)
