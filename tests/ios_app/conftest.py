@@ -32,19 +32,17 @@ def mobile_management():
         }
     })
 
-    with allure.step('init app session'):
-        browser.config.driver = webdriver.Remote("http://hub.browserstack.com/wd/hub", options=options)
+    browser.config.driver = webdriver.Remote("http://hub.browserstack.com/wd/hub", options=options)
 
     browser.config.timeout = config.timeout
     browser.config._wait_decorator = support._logging.wait_with(context=allure_commons._allure.StepContext)
 
     session_id = browser.driver.session_id
+    attach.add_screenshot(browser)
+    attach.add_xml(browser)
 
     yield
 
-    with allure.step('Tear down app session'):
-        browser.quit()
+    browser.quit()
 
-    attach.add_screenshot(browser)
-    attach.add_xml(browser)
     attach.add_video(browser, session_id)
