@@ -37,12 +37,16 @@ def mobile_management():
     browser.config.timeout = config.timeout
     browser.config._wait_decorator = support._logging.wait_with(context=allure_commons._allure.StepContext)
 
-    session_id = browser.driver.session_id
-    attach.add_screenshot(browser)
-    attach.add_xml(browser)
-
     yield
+
+    attach.attach_screenshot()
+    session_id = browser.driver.session_id
+
+    with allure.step('Tear down app session'):
+        browser.quit()
+
+    attach.attach_bstack_video(session_id)
 
     browser.quit()
 
-    attach.add_video(browser, session_id)
+    attach.attach_bstack_video(session_id)
