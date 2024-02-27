@@ -1,0 +1,24 @@
+{
+  "uuid": "9cca5910-7218-4347-8f2e-a111639e51b3",
+  "children": [
+    "5e27eb73-73e1-47ae-834d-516165a50059"
+  ],
+  "befores": [
+    {
+      "name": "mobile_management",
+      "status": "passed",
+      "start": 1709013000134,
+      "stop": 1709013033560
+    }
+  ],
+  "afters": [
+    {
+      "name": "mobile_management::0",
+      "status": "passed",
+      "start": 1709013039003,
+      "stop": 1709013039908
+    }
+  ],
+  "start": 1709013000134,
+  "stop": 1709013039908
+}

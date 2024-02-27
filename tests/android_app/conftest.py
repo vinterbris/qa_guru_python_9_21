@@ -1,7 +1,10 @@
+import allure_commons
 import pytest
+from appium import webdriver
 from appium.options.android import UiAutomator2Options
-from selene import browser
+from selene import browser, support
 
+from browserstack_sample_app_tests.utils import attach
 from config import config
 
 
@@ -9,12 +12,12 @@ from config import config
 def mobile_management():
     options = UiAutomator2Options().load_capabilities({
         # Specify device and os_version for testing
-        # "platformName": "android_app", (если это поле присутствует, то тест падает с ошибкой InvalidSelectorException
-        "platformVersion": "9.0",
-        "deviceName": "Google Pixel 3",
+        "platformName": "android",
+        "platformVersion": config.android_platform_version,
+        "deviceName": config.android_device_name,
 
         # Set URL of the application under test
-        "app": "bs://sample.app",
+        "app": config.browserstack_app_url,
 
         # Set other BrowserStack capabilities
         'bstack:options': {
@@ -28,11 +31,17 @@ def mobile_management():
         }
     })
 
-    browser.config.driver_remote_url = config.remote_url
-    browser.config.driver_options = options
-
+    browser.config.driver = webdriver.Remote("http://hub.browserstack.com/wd/hub", options=options)
     browser.config.timeout = config.timeout
+    browser.config._wait_decorator = support._logging.wait_with(context=allure_commons._allure.StepContext)
+
+    attach.add_screenshot(browser)
+    attach.add_xml(browser)
+
+    session_id = browser.driver.session_id
 
     yield
 
     browser.quit()
+
+    attach.add_video(browser, session_id)

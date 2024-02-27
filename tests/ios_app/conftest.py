@@ -1,7 +1,9 @@
+import allure
+import allure_commons
 import pytest
-from appium.options.android import UiAutomator2Options
+from appium import webdriver
 from appium.options.ios import XCUITestOptions
-from selene import browser
+from selene import browser, support
 
 from config import config
 
@@ -11,11 +13,11 @@ def mobile_management():
     options = XCUITestOptions().load_capabilities({
         # Specify device and os_version for testing
         "platformName": "ios",
-        "platformVersion": "13.0",
-        "deviceName": "iPhone 11 Pro",
+        "platformVersion": config.ios_platform_version,
+        "deviceName": config.ios_device_name,
 
         # Set URL of the application under test
-        "app": "bs://sample.app",
+        "app": config.browserstack_app_url,
 
         # Set other BrowserStack capabilities
         'bstack:options': {
@@ -29,11 +31,14 @@ def mobile_management():
         }
     })
 
-    browser.config.driver_remote_url = config.remote_url
-    browser.config.driver_options = options
+    with allure.step('init app session'):
+        browser.config.driver = webdriver.Remote("http://hub.browserstack.com/wd/hub", options=options)
 
     browser.config.timeout = config.timeout
 
+    browser.config._wait_decorator = support._logging.wait_with(context=allure_commons._allure.StepContext)
+
     yield
 
-    browser.quit()
+    with allure.step('Tear down app session'):
+        browser.quit()

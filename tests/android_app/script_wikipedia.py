@@ -6,7 +6,6 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-
 options = UiAutomator2Options().load_capabilities({
     # Specify device and os_version for testing
     "platformName": "android_app",
