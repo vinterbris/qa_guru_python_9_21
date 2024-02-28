@@ -46,7 +46,3 @@ def mobile_management():
         browser.quit()
 
     attach.attach_bstack_video(session_id)
-
-    browser.quit()
-
-    attach.attach_bstack_video(session_id)

@@ -1,6 +1,7 @@
 import allure
 import requests
 from selene import browser
+
 from config import config
 
 

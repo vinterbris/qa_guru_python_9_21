@@ -1,9 +1,8 @@
 import allure
-import allure_commons
 import pytest
 from appium import webdriver
 from appium.options.ios import XCUITestOptions
-from selene import browser, support
+from selene import browser
 
 from browserstack_sample_app_tests.utils import attach
 from config import config
@@ -35,7 +34,7 @@ def mobile_management():
     browser.config.driver = webdriver.Remote("http://hub.browserstack.com/wd/hub", options=options)
 
     browser.config.timeout = config.timeout
-    # browser.config._wait_decorator = support._logging.wait_with(context=allure_commons._allure.StepContext)
+    browser.config._wait_decorator = support._logging.wait_with(context=allure_commons._allure.StepContext)
 
     yield
 
@@ -44,10 +43,5 @@ def mobile_management():
 
     with allure.step('Tear down app session'):
         browser.quit()
-
-    attach.attach_bstack_video(session_id)
-
-
-    browser.quit()
 
     attach.attach_bstack_video(session_id)

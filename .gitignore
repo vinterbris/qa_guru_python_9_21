@@ -164,3 +164,4 @@ cython_debug/
 
 /allure-results/
 !/tests/ios_app/allure-results/
+/tests/ios_app/allure-results/
