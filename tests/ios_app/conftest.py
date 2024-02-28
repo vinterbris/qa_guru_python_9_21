@@ -1,8 +1,9 @@
 import allure
+import allure_commons
 import pytest
 from appium import webdriver
 from appium.options.ios import XCUITestOptions
-from selene import browser
+from selene import browser, support
 
 from browserstack_sample_app_tests.utils import attach
 from config import config
